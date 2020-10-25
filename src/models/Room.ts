@@ -1,6 +1,6 @@
-import mongoose, {Document} from 'mongoose'
+import mongoose, {Document as MongooseDocument} from 'mongoose'
 
-export interface RoomDocument extends Document {
+export interface RoomDocument extends MongooseDocument {
     label: string,
     pos: {
         x: number,
