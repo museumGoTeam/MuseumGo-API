@@ -5,17 +5,14 @@ const router = Router();
 const _context = new RoomService();
 
 router.get("/", async (req, res) => {
-  const rooms = await _context.getAll();
-  res.status(200).json(rooms);
+  const response = await _context.getAll();
+  res.status(200).json(response);
 });
 
-router.get<{_id: string}>("/:_id", async (req, res) => {
-  const room = await _context.getOne(req.params._id)
 
-  if (room) {
-    res.status(200).json({success: true, data: room})
-  } else {
-    res.status(404).json({message: "La pièce n'éxiste pas", success: false})
-  }
+router.get<{pos: string}>("/:pos", async (req, res) => {
+  const response = await _context.getOne({posStr: req.params.pos})
+  return res.status(200).json(response)
 });
+
 export default router;
