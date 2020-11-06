@@ -44,31 +44,25 @@ var RoomService_1 = __importDefault(require("../services/RoomService"));
 var router = express_1.Router();
 var _context = new RoomService_1.default();
 router.get("/", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var rooms;
+    var response;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, _context.getAll()];
             case 1:
-                rooms = _a.sent();
-                res.status(200).json(rooms);
+                response = _a.sent();
+                res.status(200).json(response);
                 return [2 /*return*/];
         }
     });
 }); });
-router.get("/:_id", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var room;
+router.get("/:pos", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var response;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, _context.getOne(req.params._id)];
+            case 0: return [4 /*yield*/, _context.getOne({ posStr: req.params.pos })];
             case 1:
-                room = _a.sent();
-                if (room) {
-                    res.status(200).json({ success: true, data: room });
-                }
-                else {
-                    res.status(404).json({ message: "La pièce n'éxiste pas", success: false });
-                }
-                return [2 /*return*/];
+                response = _a.sent();
+                return [2 /*return*/, res.status(200).json(response)];
         }
     });
 }); });
