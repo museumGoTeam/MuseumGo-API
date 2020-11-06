@@ -1,17 +1,4 @@
 "use strict";
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -53,35 +40,55 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var Room_1 = __importDefault(require("../models/Room"));
-var Service_1 = __importDefault(require("./Service"));
-var RoomService = /** @class */ (function (_super) {
-    __extends(RoomService, _super);
+var RoomService = /** @class */ (function () {
     function RoomService() {
-        return _super.call(this, Room_1.default) || this;
     }
-    RoomService.prototype.getOne = function (_id) {
+    RoomService.prototype.getAll = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var document, e_1;
+            var rooms, e_1, error;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        document = null;
-                        _a.label = 1;
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, Room_1.default.find()];
                     case 1:
-                        _a.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, this.context.findOne({ _id: _id })];
+                        rooms = _a.sent();
+                        return [2 /*return*/, { success: true, data: rooms }];
                     case 2:
-                        document = _a.sent();
-                        return [3 /*break*/, 4];
-                    case 3:
                         e_1 = _a.sent();
-                        console.log("error:", e_1);
-                        return [3 /*break*/, 4];
-                    case 4: return [2 /*return*/, document];
+                        error = e_1;
+                        return [2 /*return*/, { success: false, message: error }];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    RoomService.prototype.getOne = function (_a) {
+        var posStr = _a.posStr;
+        return __awaiter(this, void 0, void 0, function () {
+            var _b, x, y, room, e_2, error;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        _b = posStr.split('-').map(function (posItem) { return parseInt(posItem); }), x = _b[0], y = _b[1];
+                        _c.label = 1;
+                    case 1:
+                        _c.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, Room_1.default.findOne({ pos: { x: x, y: y } })];
+                    case 2:
+                        room = _c.sent();
+                        if (!room)
+                            return [2 /*return*/, { success: false, message: "La pièce n'éxiste pas" }];
+                        return [2 /*return*/, { success: true, data: room }];
+                    case 3:
+                        e_2 = _c.sent();
+                        error = e_2;
+                        return [2 /*return*/, { success: false, message: error }];
+                    case 4: return [2 /*return*/];
                 }
             });
         });
     };
     return RoomService;
-}(Service_1.default));
+}());
 exports.default = RoomService;
