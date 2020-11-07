@@ -6,11 +6,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 var mongoose_1 = __importDefault(require("mongoose"));
 var RoomController_1 = __importDefault(require("./controllers/RoomController"));
+var MapController_1 = __importDefault(require("./controllers/MapController"));
 var app = express_1.default();
 app.get('/', function (req, res) {
     res.status(200).json({ "status": "ok" });
 });
-app.use('/rooms', RoomController_1.default);
+app.use('/api/rooms', RoomController_1.default);
+app.use('/api/map', MapController_1.default);
 var PORT = 5000;
 app.listen(PORT, function () {
     try {
