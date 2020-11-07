@@ -11,6 +11,7 @@ app.get('/', (req, res) => {
     res.status(200).json({"status": "ok"})
 })
 
+app.use(express.json())
 app.use('/api/rooms', RoomController)
 app.use('/api/map', MapController)
 

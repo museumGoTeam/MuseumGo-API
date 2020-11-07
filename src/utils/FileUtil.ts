@@ -26,6 +26,18 @@ export default class FileUtil {
         return cells
     }
 
+    public static cellsToFile(fileName: string, cells: number[][]) {
+        const isFileExist = fs.existsSync(fileName)
+        if (isFileExist) fs.unlinkSync(fileName)
+
+        cells.forEach(row => {
+            row.forEach(cell => {
+                fs.appendFileSync(fileName, `${cell}`)
+            })
+            fs.appendFileSync(fileName, "\n");
+        })
+    }
+
 
 
 
