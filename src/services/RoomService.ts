@@ -1,20 +1,30 @@
-import Room, {RoomDocument} from '../models/Room'
-import Service from './Service'
+import { Error } from 'mongoose'
+import RoomModel, {RoomDocument} from '../models/Room'
+import { DocumentResponse } from './type';
 
 
-class RoomService extends Service<RoomDocument> {
-    constructor() {
-        super(Room)
+class RoomService {
+
+    async getAll(): Promise<DocumentResponse> {
+        try {
+            const rooms: RoomDocument[] = await RoomModel.find();
+            return {success: true, data: rooms}
+        } catch(e) {
+            const error: Error = e
+            return {success: false, message: error }
+        }
     }
 
-    public async getOne(_id: string) {
-        let document: RoomDocument | null = null
+    async getOne({posStr}: {posStr: string}): Promise<DocumentResponse | null> {
+        const [x, y] = posStr.split('-').map(posItem => parseInt(posItem))
         try {
-            document = await this.context.findOne({_id})
-        } catch (e) {
-            console.log("error:", e)
+            const room: RoomDocument | null = await RoomModel.findOne({pos: {x,y}})
+            if (!room) return {success: false, message: "La pièce n'éxiste pas"}
+            return {success: true, data: room}
+        } catch(e) {
+            const error: Error = e
+            return {success: false, message: error}
         }
-        return document
     }
 }
 

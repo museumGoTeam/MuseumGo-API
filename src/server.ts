@@ -1,6 +1,8 @@
 import express from 'express'
 import mongoose from 'mongoose'
 import RoomController from './controllers/RoomController'
+import PoiController from './controllers/PoiController'
+import MapController from './controllers/MapController'
 
 
 const app = express()
@@ -10,7 +12,11 @@ app.get('/', (req, res) => {
     res.status(200).json({"status": "ok"})
 })
 
-app.use('/rooms', RoomController)
+app.use(express.json())
+app.use('/api/rooms', RoomController)
+app.use("/api/poi", PoiController)
+app.use('/api/map', MapController)
+
 
 
 const PORT = 5000
