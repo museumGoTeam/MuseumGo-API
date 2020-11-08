@@ -1,29 +1,23 @@
-import express, { Router } from 'express'
-import { FZ_FILENAME } from '../constants'
-import PoiService from '../services/PoiService'
-import { DocumentResponse, IPOI, IRoom } from '../services/type'
-import FileUtil from '../utils/FileUtil'
+import { Request, Router } from 'express'
+import MapService from '../services/MapService'
+import { IMap, IPOI, IRoom } from '../services/type'
+
 
 const router = Router()
-const _poiContext = new PoiService()
+const _mapContext = new MapService()
 
 
 
 
 router.get("/", async (req, res) => {
-    const cells: number[][]  = await FileUtil.fileToCells(FZ_FILENAME)
-    const pois: DocumentResponse= await  _poiContext.getAll()
-    res.status(200).json({map: cells, pois: pois.data, rooms: []})
+    const response = await _mapContext.GetMap()
+    res.status(200).json(response)
 })
 
-router.post("/", (req, res) => {
-    req.url = "/"
-    const {cells, pois, rooms}: {cells: number[][], pois: IPOI[], rooms: IRoom[]} = req.body
-    pois.forEach(async poi => {
-        await _poiContext.insertOne(poi)
-    })
-    FileUtil.cellsToFile(FZ_FILENAME, cells)
-    res.status(200).json({message: "The map is saved !", success: true})
+router.post("/", async (req: Request<{}, {}, IMap>, res) => {
+    const body = req.body
+    const response = await _mapContext.updateMap(body)
+    res.status(200).json(response)
 })
 
 

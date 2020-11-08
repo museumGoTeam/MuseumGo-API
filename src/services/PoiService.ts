@@ -27,7 +27,6 @@ class PoiService {
 
     async checkIsExist(name: string): Promise<boolean> {
         const isPoiExist = await PoiModel.findOne({name})
-        console.log(isPoiExist)
         return isPoiExist !== null
     }
 }
