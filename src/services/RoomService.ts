@@ -20,8 +20,8 @@ class RoomService {
   }): Promise<DocumentResponse | null> {
     try {
       const room: RoomDocument | null = await RoomModel.findOne({_id});
-      if (!room) return { success: false, message: "La pièce n'éxiste pas" };
-      return { success: true, data: room };
+      if (!room) return { success: false, message: "The room doesn't exist" };
+      return { success: true, message:`You are in room ${room.label}`, data: room };
     } catch (e) {
       const error: Error = e;
       return { success: false, message: error };
