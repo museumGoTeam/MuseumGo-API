@@ -14,15 +14,12 @@ class RoomService {
   }
 
   async getOne({
-    posStr,
+    _id,
   }: {
-    posStr: string;
+    _id: string;
   }): Promise<DocumentResponse | null> {
-    const [x, y] = posStr.split("-").map((posItem) => parseInt(posItem));
     try {
-      const room: RoomDocument | null = await RoomModel.findOne({
-        pos: { x, y },
-      });
+      const room: RoomDocument | null = await RoomModel.findOne({_id});
       if (!room) return { success: false, message: "La pièce n'éxiste pas" };
       return { success: true, data: room };
     } catch (e) {
