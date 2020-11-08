@@ -27,7 +27,6 @@ export default class MapService {
         try {
             pois.forEach(async poi => await this._poiContext.insertOne(poi))
             rooms.forEach(async room => await this._roomContext.InsertOne(room))
-            console.log(map)
             FileUtil.cellsToFile(FZ_FILENAME, map)
             return {success: true, message: "The map was successfully updated !"}
         } catch(e) {
