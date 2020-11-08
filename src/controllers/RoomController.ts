@@ -9,7 +9,6 @@ router.get("/", async (req, res) => {
   res.status(200).json(response);
 });
 
-
 router.get<{pos: string}>("/:pos", async (req, res) => {
   const response = await _context.getOne({posStr: req.params.pos})
   return res.status(200).json(response)

@@ -11,10 +11,4 @@ router.get("/", async (req, res) => {
     res.status(200).json(pois)
 })
 
-router.post("/", async (req, res) => {
-    const poiName = req.body.name
-    const response = await _context.insertOne(poiName)
-    res.status(200).json(response)
-})
-
 export default router;

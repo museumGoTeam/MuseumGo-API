@@ -4,8 +4,14 @@ import { RoomDocument } from "../models/Room";
 
 export interface DocumentResponse {
     message?: Error | string,
-    data?:  RoomDocument[] | RoomDocument | PoiDocument[] | PoiDocument | null,
+    data?:  RoomDocument[] | RoomDocument | PoiDocument[] | PoiDocument | IMap | null,
     success: boolean
+}
+
+export interface IMap {
+    map: number[][],
+    pois: IPOI[],
+    rooms: IRoom[]
 }
 
 export interface IPOI {
@@ -16,6 +22,6 @@ export interface IPOI {
 }
 
 export interface IRoom {
-    qrcode: string
+    label: string
     pos: Pos
 }
