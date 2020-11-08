@@ -27,9 +27,7 @@ export default class FileUtil {
     }
 
     public static cellsToFile(fileName: string, cells: number[][]) {
-        console.log(cells)
         if (!cells) return
-
         const isFileExist = fs.existsSync(fileName)
         if (isFileExist) fs.unlinkSync(fileName)
 
