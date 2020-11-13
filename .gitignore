@@ -1,7 +1,6 @@
 node_modules/**/*
 build/**/*
-floor_zero.txt
 # macOS
 .DS_Store
 
-floor_zero.txt
+
