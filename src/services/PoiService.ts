@@ -18,7 +18,9 @@ class PoiService {
     async updateOne(poiUpdate: IPOI): Promise<DocumentResponse> {
         if (await !this.checkIsExist(poiUpdate.name)) return {success: false, message: "The point of interest cannot be updated"}
         try {
-            const poi = await PoiModel.updateOne({name: poiUpdate.name}, poiUpdate)
+            console.log(poiUpdate.name)
+            const poi = await PoiModel.updateOne({_id: poiUpdate._id}, poiUpdate)
+            console.log(poi);
             return {success: true, message: "The point of interest was successfully updated !", data: poi}
         } catch(e) {
             return {success: false, message: "An intern error has occured"}
