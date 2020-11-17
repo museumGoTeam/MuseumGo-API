@@ -1,4 +1,5 @@
 import { Error } from "mongoose";
+import Room from "../models/Room";
 import RoomModel, { RoomDocument } from "../models/Room";
 import { DocumentResponse, IRoom } from "./type";
 
@@ -10,6 +11,16 @@ class RoomService {
     } catch (e) {
       const error: Error = e;
       return { success: false, message: error };
+    }
+  }
+
+  async updateOne(roomUpdate: IRoom): Promise<DocumentResponse> {
+    if (await !this.checkIsExist(roomUpdate._id)) return {success: false, message: "The room doesn't exist"}
+    try {
+      const room = await RoomModel.updateOne({_id: roomUpdate._id}, roomUpdate)
+      return {success: true, message: "The room was successfully updated !", data: room}
+    } catch (e) {
+      return {success: false, message: "An intern error has occured"}
     }
   }
 
@@ -38,8 +49,8 @@ class RoomService {
     }
   }
 
-  async checkIsExist(name: string): Promise<boolean> {
-    const isPoiExist = await RoomModel.findOne({ name });
+  async checkIsExist(_id: string): Promise<boolean> {
+    const isPoiExist = await RoomModel.findOne({ _id });
     return isPoiExist !== null;
   }
 }

@@ -16,7 +16,7 @@ class PoiService {
     }
 
     async updateOne(poiUpdate: IPOI): Promise<DocumentResponse> {
-        if (await !this.checkIsExist(poiUpdate.name)) return {success: false, message: "The point of interest cannot be updated"}
+        if (await !this.checkIsExist(poiUpdate._id)) return {success: false, message: "The point of interest cannot be updated"}
         try {
             console.log(poiUpdate.name)
             const poi = await PoiModel.updateOne({_id: poiUpdate._id}, poiUpdate)
@@ -48,8 +48,8 @@ class PoiService {
         }
     }
 
-    async checkIsExist(name: string): Promise<boolean> {
-        const isPoiExist = await PoiModel.findOne({name})
+    async checkIsExist(_id: string): Promise<boolean> {
+        const isPoiExist = await PoiModel.findOne({_id})
         return isPoiExist !== null
     }
 }
