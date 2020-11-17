@@ -6,7 +6,7 @@ import { DocumentResponse, IPOI } from './type';
 class PoiService {
 
     async insertOne(poiInsert: IPOI): Promise<void> {
-        if (await this.checkIsExist(poiInsert.name)) return
+        if (await this.checkIsExist(poiInsert._id)) return
         try {
             const poi = new PoiModel(poiInsert)
             await poi.save()

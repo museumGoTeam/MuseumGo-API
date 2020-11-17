@@ -40,7 +40,7 @@ class RoomService {
   }
 
   async InsertOne(roomInsert: IRoom) {
-    if (await this.checkIsExist(roomInsert.label)) return;
+    if (await this.checkIsExist(roomInsert._id)) return;
     try {
       const poi = new RoomModel(roomInsert);
       await poi.save();
