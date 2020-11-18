@@ -1,5 +1,6 @@
 import { Error } from 'mongoose'
 import PoiModel, { PoiDocument } from '../models/Poi';
+import FileUtil from '../utils/FileUtil';
 import { DocumentResponse, IPOI } from './type';
 
 
@@ -52,9 +53,10 @@ class PoiService {
         try {
             const poi: PoiDocument | null = await PoiModel.findByIdAndDelete(_id)
             if (!poi) return { success: false, message: "The point of interest doesn't exist"}
+            await FileUtil.deleteCell({posX: poi.pos.x, posY: poi.pos.y})
             return {success: true, message: "The point of interest has been deleted", data: poi}
         } catch(e) {
-            return {success: false, message: "An inern error has occured"}
+            return {success: false, message: "An intern error has occured"}
         }
     }
 

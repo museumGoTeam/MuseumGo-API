@@ -1,6 +1,7 @@
 import { Error } from "mongoose";
 import Room from "../models/Room";
 import RoomModel, { RoomDocument } from "../models/Room";
+import FileUtil from "../utils/FileUtil";
 import { DocumentResponse, IRoom } from "./type";
 
 class RoomService {
@@ -49,9 +50,20 @@ class RoomService {
     }
   }
 
+  async deleteOne(_id: string): Promise<DocumentResponse> {
+    try {
+        const room: RoomDocument | null = await RoomModel.findByIdAndDelete(_id)
+        if (!room) return { success: false, message: "The room doesn't exist"}
+        await FileUtil.deleteCell({posX: room.pos.x, posY: room.pos.y})
+        return {success: true, message: "The room has been deleted", data: room}
+    } catch(e) {
+        return {success: false, message: "An intern error has occured"}
+    }
+}
+
   async checkIsExist(_id: string): Promise<boolean> {
-    const isPoiExist = await RoomModel.findOne({ _id });
-    return isPoiExist !== null;
+    const isRoomExist = await RoomModel.findOne({ _id });
+    return isRoomExist !== null;
   }
 }
 

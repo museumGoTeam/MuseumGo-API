@@ -40,11 +40,11 @@ export default class FileUtil {
         })
     }
 
-    public static async deleteCells({posX, posY, entity}: {posX: number, posY: number, entity: number}) {
+    public static async deleteCell({posX, posY}: {posX: number, posY: number}) {
         const map: number[][] = await this.fileToCells(FZ_FILENAME)
         const updatedMap = map.map((row, indexY) => {
             if (indexY === posY) {
-                row.map((cell, indexX) => indexX === posX ? entity  : cell )
+                return row.map((cell, indexX) => indexX === posX ? 0 : cell)
             }
             return row
         })

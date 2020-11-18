@@ -21,4 +21,9 @@ router.put("/", async (req: Request<{}, {}, IRoom>, res) => {
   res.status(200).json(response)
 })
 
+router.delete("/:_id", async (req: Request<{_id: string}, {}, {}>, res) => {
+  const response = await _context.deleteOne(req.params._id)
+  res.status(200).json(response)
+})
+
 export default router;
