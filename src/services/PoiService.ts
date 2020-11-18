@@ -48,6 +48,16 @@ class PoiService {
         }
     }
 
+    async deleteOne(_id: string): Promise<DocumentResponse> {
+        try {
+            const poi: PoiDocument | null = await PoiModel.findByIdAndDelete(_id)
+            if (!poi) return { success: false, message: "The point of interest doesn't exist"}
+            return {success: true, message: "The point of interest has been deleted", data: poi}
+        } catch(e) {
+            return {success: false, message: "An inern error has occured"}
+        }
+    }
+
     async checkIsExist(_id: string): Promise<boolean> {
         const isPoiExist = await PoiModel.findOne({_id})
         return isPoiExist !== null

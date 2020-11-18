@@ -1,4 +1,4 @@
-import { Request, Router } from "express";
+import { json, Request, Router } from "express";
 import PoiService from "../services/PoiService";
 import { DocumentResponse, IPOI } from "../services/type";
 
@@ -22,4 +22,11 @@ router.put("/", async (req: Request<{}, {}, IPOI>, res) => {
     const response = await _context.updateOne(poi)
     res.status(200).json(response)
 })
+
+
+router.delete("/:_id", async (req: Request<{_id: string}, {}, {}>, res) => {
+    const response = await _context.deleteOne(req.params._id)
+    res.status(200).json(response)
+})
+
 export default router;

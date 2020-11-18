@@ -1,5 +1,6 @@
 import fs, { read } from "fs"
 import readline from 'readline'
+import { FZ_FILENAME } from "../constants"
 
 
 export default class FileUtil {
@@ -37,6 +38,17 @@ export default class FileUtil {
             })
             fs.appendFileSync(fileName, "\n");
         })
+    }
+
+    public static async deleteCells({posX, posY, entity}: {posX: number, posY: number, entity: number}) {
+        const map: number[][] = await this.fileToCells(FZ_FILENAME)
+        const updatedMap = map.map((row, indexY) => {
+            if (indexY === posY) {
+                row.map((cell, indexX) => indexX === posX ? entity  : cell )
+            }
+            return row
+        })
+        this.cellsToFile(FZ_FILENAME, updatedMap)
     }
 
 
