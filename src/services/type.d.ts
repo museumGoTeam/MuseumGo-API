@@ -8,6 +8,12 @@ export interface DocumentResponse {
     success: boolean
 }
 
+export interface DataResponse<T> {
+    message?: Error | string,
+    data?:  T
+    success: boolean
+}
+
 export interface IMap {
     map: number[][],
     pois: IPOI[],

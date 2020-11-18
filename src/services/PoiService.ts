@@ -6,11 +6,12 @@ import { DocumentResponse, IPOI } from './type';
 
 class PoiService {
 
-    async insertOne(poiInsert: IPOI): Promise<void> {
-        if (await this.checkIsExist(poiInsert._id)) return
+    async insertOne(poiInsert: IPOI): Promise<PoiDocument | void> {
+        if (await this.checkIfNameExist(poiInsert.name)) return
         try {
             const poi = new PoiModel(poiInsert)
-            await poi.save()
+            return await poi.save()
+            
         } catch(e) {
             const error: Error = e
         }
@@ -59,6 +60,12 @@ class PoiService {
             return {success: false, message: "An intern error has occured"}
         }
     }
+
+
+    async checkIfNameExist(name: string): Promise<boolean> {
+        const isRoomExist = await PoiModel.findOne({name})
+        return isRoomExist !== null;
+      }
 
     async checkIsExist(_id: string): Promise<boolean> {
         const isPoiExist = await PoiModel.findOne({_id})

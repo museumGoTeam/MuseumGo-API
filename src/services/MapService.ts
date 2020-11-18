@@ -1,8 +1,10 @@
 import { FZ_FILENAME } from "../constants";
+import { PoiDocument } from "../models/Poi";
+import { RoomDocument } from "../models/Room";
 import FileUtil from "../utils/FileUtil";
 import PoiService from "./PoiService";
 import RoomService from "./RoomService";
-import { DocumentResponse, IMap, IPOI, IRoom } from "./type";
+import { DataResponse, DocumentResponse, IMap, IPOI, IRoom } from "./type";
 
 export default class MapService {
     _roomContext: RoomService;
@@ -23,12 +25,14 @@ export default class MapService {
         }
     }
 
-    async updateMap({map, pois, rooms}: IMap): Promise<DocumentResponse> {
+    async updateMap({map, pois, rooms}: IMap): Promise<DataResponse<{pois: (void | PoiDocument)[], rooms: (void | RoomDocument)[]}>> {
         try {
-            pois.forEach(async poi => await this._poiContext.insertOne(poi))
-            rooms.forEach(async room => await this._roomContext.InsertOne(room))
+            const poisInserted = await (await Promise.all(pois.map(async poi => await this._poiContext.insertOne(poi))))
+                .filter(poiInserted => poiInserted !== undefined)
+            const roomsInserted = await (await Promise.all(rooms.map(async room => await this._roomContext.InsertOne(room))))
+                .filter(roomInserted => roomInserted !== undefined)
             FileUtil.cellsToFile(FZ_FILENAME, map)
-            return {success: true, message: "The map was successfully updated !"}
+            return {success: true, message: "The map was successfully updated !", data: {pois: poisInserted, rooms: roomsInserted}}
         } catch(e) {
             console.log(e)
             return {success: false, message: "An intern error has occured"}

@@ -40,11 +40,11 @@ class RoomService {
     }
   }
 
-  async InsertOne(roomInsert: IRoom) {
-    if (await this.checkIsExist(roomInsert._id)) return;
+  async InsertOne(roomInsert: IRoom): Promise<RoomDocument | void> {
+    if (await this.checkIfNameExist(roomInsert.label)) return;
     try {
       const poi = new RoomModel(roomInsert);
-      await poi.save();
+      return await poi.save();
     } catch (e) {
       const error: Error = e;
     }
@@ -60,6 +60,11 @@ class RoomService {
         return {success: false, message: "An intern error has occured"}
     }
 }
+
+  async checkIfNameExist(name: string): Promise<boolean> {
+    const isRoomExist = await RoomModel.findOne({label: name})
+    return isRoomExist !== null;
+  }
 
   async checkIsExist(_id: string): Promise<boolean> {
     const isRoomExist = await RoomModel.findOne({ _id });
