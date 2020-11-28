@@ -1,12 +1,9 @@
 import { Request, Router } from 'express'
 import MapService from '../services/MapService'
-import { IMap, IPOI, IRoom } from '../services/type'
-
+import { IMap  } from '../services/type'
 
 const router = Router()
 const _mapContext = new MapService()
-
-
 
 
 router.get("/", async (req, res) => {

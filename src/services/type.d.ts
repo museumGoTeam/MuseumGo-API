@@ -1,7 +1,6 @@
 import { Error } from "mongoose";
 import { PoiDocument } from "../models/Poi";
 import { RoomDocument } from "../models/Room";
-
 export interface DocumentResponse {
     message?: Error | string,
     data?:  RoomDocument[] | RoomDocument | PoiDocument[] | PoiDocument | IMap | null,
@@ -22,6 +21,11 @@ export interface IMap {
 
 export interface MongoDocument {
     _id: string
+}
+
+export interface Pos {
+    x: number,
+    y: number
 }
 export interface IPOI extends MongoDocument {
     name: string
