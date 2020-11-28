@@ -1,6 +1,7 @@
 import fs, { read } from "fs"
 import readline from 'readline'
 import { FZ_FILENAME } from "../constants"
+import { Node } from "./types"
 
 
 export default class FileUtil {
@@ -39,6 +40,31 @@ export default class FileUtil {
             fs.appendFileSync(fileName, "\n");
         })
     }
+
+
+    public static async fileToNodes(fileName: string): Promise<Node[][]> {
+        let nodes: Node[][] = []
+        const rl = this.getReadInterface(fileName)
+        let y = 0
+
+        for await (const line of rl) {
+            const row: Node[] = line.split("").map((entity, index) => {
+                return {
+                    x: index,
+                    y,
+                    entity: parseInt(entity),
+                    isVisited: false,
+                    distance: Infinity,
+                    previous: null
+                }
+            })
+            nodes.push(row)
+            y++
+        }
+        
+        return nodes
+    }
+
 
     public static async deleteCell({posX, posY}: {posX: number, posY: number}) {
         const map: number[][] = await this.fileToCells(FZ_FILENAME)

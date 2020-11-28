@@ -1,7 +1,9 @@
 import { FZ_FILENAME } from "../constants";
 import { PoiDocument } from "../models/Poi";
 import { RoomDocument } from "../models/Room";
+import Dijkstra from "../utils/Dijkstra";
 import FileUtil from "../utils/FileUtil";
+import NodeUtil from "../utils/NodeUtil";
 import PoiService from "./PoiService";
 import RoomService from "./RoomService";
 import { DataResponse, DocumentResponse, IMap, IPOI, IRoom } from "./type";
@@ -23,6 +25,14 @@ export default class MapService {
         } catch {
             return {success: false, message: "An intern error has occured"}
         }
+    }
+
+    async GetItinerary(): Promise<number[][] | undefined> {
+        const dijkstra: Dijkstra = new Dijkstra(FZ_FILENAME)
+        await dijkstra.init()
+        const itinerary = dijkstra.generate()
+        const cells = NodeUtil.nodesToCells(dijkstra.nodes, itinerary)
+        return cells
     }
 
     async updateMap({map, pois, rooms}: IMap): Promise<DataResponse<{pois: (void | PoiDocument)[], rooms: (void | RoomDocument)[]}>> {

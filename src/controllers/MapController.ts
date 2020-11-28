@@ -1,6 +1,10 @@
 import { Request, Router } from 'express'
+import { FZ_FILENAME } from '../constants'
 import MapService from '../services/MapService'
 import { IMap  } from '../services/type'
+import Dijkstra from '../utils/Dijkstra'
+import NodeUtil from '../utils/NodeUtil'
+import { Node } from '../utils/types'
 
 const router = Router()
 const _mapContext = new MapService()
@@ -15,6 +19,11 @@ router.post("/", async (req: Request<{}, {}, IMap>, res) => {
     const body = req.body
     const response = await _mapContext.updateMap(body)
     res.status(200).json(response)
+})
+
+router.get('/itinerary', async (req, res) => {
+    const mapWithItinerary = await _mapContext.GetItinerary()
+    res.status(200).json(mapWithItinerary)
 })
 
 
