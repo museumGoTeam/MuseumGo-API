@@ -7,8 +7,7 @@ const _context = new PoiService();
 
 
 router.get("/", async (req, res) => {
-    console.log("Coucou")
-    const pois: DocumentResponse= await _context.getAll();
+    const pois: DocumentResponse= await _context.getAll({onlyConfigured: true});
     res.status(200).json(pois)
 })
 
