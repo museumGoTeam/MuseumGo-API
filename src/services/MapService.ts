@@ -17,7 +17,7 @@ export default class MapService {
     async GetMap(): Promise<DocumentResponse> {
         try {
             const map = await FileUtil.fileToCells(FZ_FILENAME)
-            const pois = (await this._poiContext.getAll()).data as IPOI[]
+            const pois = (await this._poiContext.getAll({onlyConfigured: false})).data as IPOI[]
             const rooms = (await this._roomContext.getAll()).data as IRoom[]
             return {success: true, data: {map, pois, rooms}}
         } catch {
