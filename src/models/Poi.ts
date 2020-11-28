@@ -4,6 +4,7 @@ export interface PoiDocument extends MongooseDocument {
     name: string,
     description: string
     image: string,
+    isConfigured: boolean
     pos: {
         x: number,
         y: number
@@ -24,6 +25,11 @@ const Schema = new mongoose.Schema({
         type: String,
         required: false,
         default: null
+    },
+    isConfigured: {
+        type: Boolean,
+        required: true,
+        default: false
     },
     pos: {
         x: Number,

@@ -31,6 +31,7 @@ export interface IPOI extends MongoDocument {
     name: string
     description?: string
     image?: string
+    isConfigured: boolean
     pos: Pos
 }
 

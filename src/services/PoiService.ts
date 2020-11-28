@@ -11,7 +11,6 @@ class PoiService {
         try {
             const poi = new PoiModel(poiInsert)
             return await poi.save()
-            
         } catch(e) {
             const error: Error = e
         }
