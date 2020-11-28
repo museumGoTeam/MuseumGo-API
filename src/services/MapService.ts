@@ -34,7 +34,6 @@ export default class MapService {
             FileUtil.cellsToFile(FZ_FILENAME, map)
             return {success: true, message: "The map was successfully updated !", data: {pois: poisInserted, rooms: roomsInserted}}
         } catch(e) {
-            console.log(e)
             return {success: false, message: "An intern error has occured"}
         }
     }
