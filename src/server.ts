@@ -1,15 +1,16 @@
-import express from 'express'
+import express, {Response} from 'express'
 import mongoose from 'mongoose'
 import RoomController from './controllers/RoomController'
 import PoiController from './controllers/PoiController'
 import MapController from './controllers/MapController'
+import { ICheckConnectivity } from './services/type'
 
 
 const app = express()
 
 
-app.get('/', (req, res) => {
-    res.status(200).json({"status": "ok"})
+app.get('/', (req, res: Response<ICheckConnectivity>) => {
+    res.status(200).json({status: "ok"})
 })
 
 app.use(express.json())

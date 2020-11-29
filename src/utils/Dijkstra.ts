@@ -1,3 +1,4 @@
+import { ItineraryPos, Pos } from "../services/type";
 import FileUtil from "./FileUtil";
 import { Node } from "./types";
 
@@ -11,11 +12,11 @@ class Dijkstra {
         this.fileName = fileName
     }
 
-    public async init(): Promise<void> {
+    public async init({poiPos, roomPos}: ItineraryPos): Promise<void> {
         if (!this.fileName) throw new Error("Filename is undefined please instanciate it when creating new instance of Dijkstra")
         this._nodes = await FileUtil.fileToNodes(this.fileName);
-        this._startNode = this._nodes[0][0]
-        this._endNode = this._nodes[this._nodes.length - 1][this._nodes[0].length - 1]
+        this._startNode = this._nodes[roomPos.y][roomPos.x]
+        this._endNode = this._nodes[poiPos.y][poiPos.x]
         this.getVisitedNodesInOrder()
     }
 

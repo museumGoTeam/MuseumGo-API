@@ -6,8 +6,10 @@ import FileUtil from "../utils/FileUtil";
 import NodeUtil from "../utils/NodeUtil";
 import PoiService from "./PoiService";
 import RoomService from "./RoomService";
-import { DataResponse, DocumentResponse, IMap, IPOI, IRoom } from "./type";
+import { DataResponse, DocumentResponse, IMap, IPOI, IRoom, ItineraryPos } from "./type";
 
+
+const dijkstra: Dijkstra = new Dijkstra(FZ_FILENAME)
 export default class MapService {
     _roomContext: RoomService;
     _poiContext: PoiService;
@@ -27,9 +29,8 @@ export default class MapService {
         }
     }
 
-    async GetItinerary(): Promise<number[][] | undefined> {
-        const dijkstra: Dijkstra = new Dijkstra(FZ_FILENAME)
-        await dijkstra.init()
+    async GetItinerary(itineraryPos: ItineraryPos): Promise<number[][] | undefined> {
+        await dijkstra.init(itineraryPos)
         const itinerary = dijkstra.generate()
         const cells = NodeUtil.nodesToCells(dijkstra.nodes, itinerary)
         return cells
