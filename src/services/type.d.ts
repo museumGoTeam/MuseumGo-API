@@ -39,3 +39,13 @@ export interface IRoom extends MongoDocument {
     label: string
     pos: Pos
 }
+
+export interface ICheckConnectivity {
+    status: "ok"
+    message?: string
+}
+
+export interface ItineraryPos {
+    roomPos: Pos,
+    poiPos: Pos
+}
