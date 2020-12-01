@@ -36,12 +36,13 @@ export default class MapService {
         return cells
     }
 
-    async updateMap({map, pois, rooms}: IMap): Promise<DataResponse<{pois: (void | PoiDocument)[], rooms: (void | RoomDocument)[]}>> {
+    async updateMap({map, pois, rooms, poisMoved}: IMap & {poisMoved: IPOI[]}): Promise<DataResponse<{pois: (void | PoiDocument)[], rooms: (void | RoomDocument)[]}>> {
         try {
             const poisInserted = await (await Promise.all(pois.map(async poi => await this._poiContext.insertOne(poi))))
                 .filter(poiInserted => poiInserted !== undefined)
             const roomsInserted = await (await Promise.all(rooms.map(async room => await this._roomContext.InsertOne(room))))
                 .filter(roomInserted => roomInserted !== undefined)
+            const poisUpdated = await (await Promise.all(poisMoved.map(async poiMoved => await this._poiContext.updateOne(poiMoved, true))))
             FileUtil.cellsToFile(FZ_FILENAME, map)
             return {success: true, message: "The map was successfully updated !", data: {pois: poisInserted, rooms: roomsInserted}}
         } catch(e) {

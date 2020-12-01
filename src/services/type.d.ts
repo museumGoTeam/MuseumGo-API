@@ -16,7 +16,7 @@ export interface DataResponse<T> {
 export interface IMap {
     map: number[][],
     pois: IPOI[],
-    rooms: IRoom[]
+    rooms: IRoom[],
 }
 
 export interface MongoDocument {
