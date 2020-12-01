@@ -1,0 +1,236 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "MuseumGO API Documentation",
+    "version": "1.0.0",
+    "title": "MuseumGO API",
+    "termsOfService": "http://swagger.io/terms/"
+  },
+  "host": "localhost:5000",
+  "basePath": "/api",
+  "tags": [
+    {
+      "name": "Map",
+      "description": "Endpoints for managing the map"
+    },
+    {
+      "name": "Point of interest ",
+      "description": "Endpoints for managing the points of interests"
+    },
+    {
+      "name": "QR code Room",
+      "description": "Endpoints for managing the qr code rooms"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/map": {
+      "get": {
+        "tags": [
+          "Map"
+        ],
+        "summary": "Return the grid that contains the points of interests, the rooms QR codes and walls",
+        "operationId": "getMap",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "$ref": "#/definitions/Map"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorResponse"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Map"
+        ],
+        "summary": "Receive the map model that contains the grid, the points of interest and room qr codes to insert",
+        "operationId": "postMap",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "required": true,
+            "name": "map",
+            "schema": {
+              "$ref": "#/definitions/Map"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "message": {
+                  "type": "string",
+                  "example": "The map was successfully updated !"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "pois": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/definitions/POI"
+                      }
+                    },
+                    "rooms": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/definitions/Room"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error",
+            "schema": {
+              "$ref": "#/definitions/InternalErrorResponse"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Pos": {
+      "type": "object",
+      "properties": {
+        "x": {
+          "type": "number",
+          "example": 30
+        },
+        "y": {
+          "type": "number",
+          "example": 16
+        }
+      }
+    },
+    "POI": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string",
+          "example": "1"
+        },
+        "name": {
+          "type": "string",
+          "example": "Mona Lisa"
+        },
+        "description": {
+          "type": "string",
+          "example": "The description of Mona Lisa"
+        },
+        "image": {
+          "type": "string",
+          "example": "https://upload.wikimedia.org/wikipedia/commons/7/76/Leonardo_da_Vinci_-_Mona_Lisa.jpg"
+        },
+        "pos": {
+          "$ref": "#/definitions/Pos"
+        }
+      }
+    },
+    "Room": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "1"
+        },
+        "label": {
+          "type": "string",
+          "example": "Room 2105"
+        },
+        "pos": {
+          "$ref": "#/definitions/Pos"
+        }
+      }
+    },
+    "Map": {
+      "type": "object",
+      "properties": {
+        "map": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "example": [
+            [
+              0,
+              4,
+              0,
+              1
+            ],
+            [
+              1,
+              1,
+              3,
+              0
+            ]
+          ]
+        },
+        "pois": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/POI"
+          }
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Room"
+          }
+        }
+      }
+    },
+    "InternalErrorResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": false
+        },
+        "message": {
+          "type": "string",
+          "example": "An intern error has occured"
+        }
+      }
+    }
+  }
+}

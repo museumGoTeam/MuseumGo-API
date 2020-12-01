@@ -12,6 +12,7 @@ const _mapContext = new MapService()
 
 router.get("/", async (req, res) => {
     const response = await _mapContext.GetMap()
+    console.log(response)
     res.status(200).json(response)
 })
 

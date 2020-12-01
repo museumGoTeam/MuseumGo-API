@@ -29,7 +29,7 @@ class PoiService {
 
     async getAll({onlyConfigured}: {onlyConfigured: boolean}): Promise<DocumentResponse> {
         try {
-            const pois: PoiDocument[] = await PoiModel.find({isConfigured: onlyConfigured});
+            const pois: PoiDocument[] = await (onlyConfigured ? PoiModel.find({isConfigured: onlyConfigured}) :  PoiModel.find());
             return {success: true, data: pois}
         } catch(e) {
             const error: Error = e
