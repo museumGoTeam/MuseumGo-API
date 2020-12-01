@@ -19,7 +19,7 @@ router.get<{_id: string}>('/:_id', async (req, res) => {
 
 router.put("/", async (req: Request<{}, {}, IPOI>, res) => {
     const poi = req.body
-    const response = await _context.updateOne(poi)
+    const response = await _context.updateOne(poi, false)
     res.status(200).json(response)
 })
 

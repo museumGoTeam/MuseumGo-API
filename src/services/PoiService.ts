@@ -16,9 +16,10 @@ class PoiService {
         }
     }
 
-    async updateOne(poiUpdate: IPOI): Promise<DocumentResponse> {
-        if (await !this.checkIsExist(poiUpdate._id)) return {success: false, message: "The point of interest cannot be updated"}
-        if (poiUpdate.description === null ||poiUpdate.image === null) return {success: false, message: "Please fill the required fields"}
+    async updateOne(poiUpdate: IPOI, isMoved: boolean): Promise<DocumentResponse> {
+        if (await !this.checkIsExist(poiUpdate._id))  return {success: false, message: "The point of interest cannot be updated"}
+        if (!isMoved && (poiUpdate.description === null || poiUpdate.image === null)) return {success: false, message: "Please fill the required fields"
+        }
         try {
             const poi = await PoiModel.updateOne({_id: poiUpdate._id}, {...poiUpdate, isConfigured: true})
             return {success: true, message: "The point of interest was successfully updated !", data: poi}
@@ -26,6 +27,7 @@ class PoiService {
             return {success: false, message: "An intern error has occured"}
         }
     }
+    
 
     async getAll({onlyConfigured}: {onlyConfigured: boolean}): Promise<DocumentResponse> {
         try {
